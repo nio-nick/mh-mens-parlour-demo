@@ -1,0 +1,759 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MH Men's Parlour | Book Online</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Concept demo of an online booking page for MH Men's Parlour in Uttara, Dhaka. Pick your barber and book an open time online.">
+<meta name="theme-color" content="#141414">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#141414;--surface:#1d1d1d;--surface2:#262626;--line:#2e2e2e;
+  --text:#f3efe6;--muted:#b9b3a6;--subtle:#8d887c;
+  --gold:#c9a45c;--gold-ink:#141414;--brick:#8a2f2f;
+  --wrap:1200px;--ease:cubic-bezier(.2,.7,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.6 "DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+main{flex:1;outline:none}
+img,svg{max-width:100%}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,p,ul,ol,dl,dd,figure{margin:0}
+ul,ol{padding:0;list-style:none}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+[tabindex="-1"]:focus,[tabindex="-1"]:focus-visible{outline:none}
+.wrap{width:100%;max-width:var(--wrap);margin:0 auto;padding:0 24px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:12px;top:-64px;background:var(--gold);color:var(--gold-ink);padding:12px 16px;z-index:100;border-radius:4px;font-weight:700}
+.skip:focus{top:12px}
+.d{font-family:"Barlow Condensed","Arial Narrow",Impact,sans-serif;font-weight:700;text-transform:uppercase;line-height:.96;letter-spacing:.01em}
+.muted{color:var(--muted)}
+.small{font-size:13px;color:var(--subtle)}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes rise{to{transform:none}}
+@keyframes panelIn{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.86)}60%{transform:scale(1.07)}100%{transform:none}}
+@keyframes poleMove{from{background-position:0 0}to{background-position:0 76.37px}}
+@keyframes draw{to{stroke-dashoffset:0}}
+#app.enter{animation:fade .35s var(--ease)}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 26px;border-radius:4px;border:1px solid transparent;background:none;font-weight:700;font-size:16px;text-align:center;transition:background .2s,color .2s,border-color .2s,transform .2s var(--ease)}
+.btn-gold{background:var(--gold);color:var(--gold-ink)}
+.btn-gold:hover{background:#d8b56c;transform:translateY(-1px)}
+.btn-ghost{border-color:#4a4a4a;font-weight:500}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+.btn[disabled]{background:var(--surface2);color:#7a766d;cursor:not-allowed;transform:none;border-color:transparent}
+.btn-sm{min-height:44px;padding:0 18px;font-size:15px}
+.btn-lg{min-height:56px;padding:0 34px;font-size:17px}
+
+/* Header */
+.hd{position:sticky;top:0;z-index:50;background:rgba(20,20,20,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.hd-in{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:72px}
+.brand{font-size:clamp(19px,3.4vw,26px);letter-spacing:.06em;min-width:0;line-height:1.05}
+@media(max-width:420px){.brand{font-size:17px;letter-spacing:.03em}.hd-act{gap:8px}.hd-act .btn-sm{padding:0 14px}.menu{padding:0 12px}.hd-in{gap:10px}}
+.brand b{color:var(--gold);font-weight:700}
+.nav{position:absolute;left:0;right:0;top:100%;display:none;flex-direction:column;background:var(--bg);border-bottom:1px solid var(--line);padding:8px 24px 16px}
+.nav.open{display:flex;animation:fade .25s var(--ease)}
+.nav a{padding:14px 0;border-bottom:1px solid var(--line);font-weight:500}
+.nav a[aria-current="page"]{color:var(--gold)}
+.nav a:hover{color:var(--gold)}
+.hd-act{display:flex;align-items:center;gap:10px;flex:none}
+.menu{min-height:44px;padding:0 16px;border:1px solid #4a4a4a;border-radius:4px;background:none;font-weight:500}
+.menu:hover{border-color:var(--gold)}
+@media(min-width:860px){
+  .nav{position:static;display:flex;flex-direction:row;gap:30px;border:0;padding:0;background:none}
+  .nav.open{animation:none}
+  .nav a{padding:6px 0;border:0;font-size:15px}
+  .menu{display:none}
+  .hd-in{display:grid;grid-template-columns:auto 1fr auto;gap:32px}
+  .nav{justify-content:center}
+}
+
+/* Photo slot with built-in illustration fallback */
+.ph{position:relative;overflow:hidden;isolation:isolate;background:radial-gradient(120% 90% at 30% 20%,#2c2822 0,#1a1a1a 62%)}
+.ph::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(201,164,92,.06) 0 2px,transparent 2px 15px);z-index:0}
+.ph .ico{position:absolute;left:50%;top:50%;width:min(34%,110px);aspect-ratio:1;transform:translate(-50%,-50%);color:var(--gold);opacity:.55;z-index:0}
+.ph img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;opacity:0;transition:opacity .7s var(--ease),transform .9s var(--ease);z-index:1}
+.ph img.ok{opacity:1}
+.hov:hover .ph img,.ph.hov:hover img{transform:scale(1.045)}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(32px,6vw,72px);align-items:center;padding-top:clamp(36px,7vw,84px);padding-bottom:clamp(56px,9vw,104px)}
+.hero-copy{display:flex;flex-direction:column;gap:26px}
+.hero h1{font-size:clamp(46px,7.2vw,96px)}
+.hero h1 .ln{display:block;overflow:hidden;padding-bottom:.06em}
+.hero h1 .ln>span{display:block;transform:translateY(106%);animation:rise .95s var(--ease) forwards}
+.hero h1 .ln:nth-child(2)>span{animation-delay:.14s}
+.seq{animation:fade .8s var(--ease) both;animation-delay:var(--d,0s)}
+.kicker{color:var(--gold);font-weight:700;font-size:15px}
+.lead{font-size:clamp(17px,2vw,19px);color:var(--muted);max-width:31em}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px}
+.ticks{display:flex;flex-wrap:wrap;gap:8px 28px;color:var(--muted);font-size:15px}
+.ticks li{display:flex;align-items:center;gap:8px}
+.ticks svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.hero-art{position:relative;max-width:520px;width:100%;justify-self:center}
+.frame{position:relative;overflow:hidden;aspect-ratio:4/5;border-radius:8px;border:1px solid var(--line);margin-left:24px;animation:fade 1s var(--ease) .25s both}
+.frame .ph{position:absolute;inset:0}
+.pole{position:absolute;left:0;top:-22px;bottom:-22px;width:48px;z-index:3;display:flex;flex-direction:column;filter:drop-shadow(0 12px 22px rgba(0,0,0,.55))}
+.pole .cap{height:20px;border-radius:5px;background:linear-gradient(180deg,#e2c283,#a98743);flex:none;margin:0 -4px}
+.pole .tube{position:relative;flex:1;margin:2px 0;border-radius:3px;background:repeating-linear-gradient(-45deg,var(--gold) 0 18px,var(--text) 18px 36px,var(--brick) 36px 54px);background-size:100% 76.37px;animation:poleMove 3.2s linear infinite}
+.pole .tube::after{content:"";position:absolute;inset:0;border-radius:3px;background:linear-gradient(90deg,rgba(0,0,0,.5),rgba(255,255,255,.22) 32%,rgba(0,0,0,0) 56%,rgba(0,0,0,.55))}
+@media(max-width:859px){
+  .hero{grid-template-columns:1fr}
+  .hero-art{max-width:420px}
+  .frame{aspect-ratio:1/1}
+}
+
+/* Sections */
+.sec{padding:clamp(56px,9vw,96px) 0;border-top:1px solid var(--line)}
+.sec.alt{background:#181818}
+.sh{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px;margin-bottom:clamp(28px,5vw,44px)}
+.sh h2{font-size:clamp(38px,6vw,56px)}
+.more{color:var(--gold);font-weight:700;border-bottom:1px solid transparent;transition:border-color .2s}
+.more:hover{border-color:var(--gold)}
+.page-h{padding:clamp(40px,7vw,72px) 0 clamp(20px,4vw,32px)}
+.page-h h1{font-size:clamp(46px,8vw,84px)}
+.page-h p{margin-top:14px;color:var(--muted);max-width:36em}
+
+/* Cards */
+.grid{display:grid;gap:20px}
+.g-svc{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.g-bar{grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr))}
+.card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden;transition:border-color .25s,transform .3s var(--ease)}
+.card:hover{border-color:var(--gold);transform:translateY(-3px)}
+.svc{padding:26px;gap:12px;min-height:160px}
+.svc-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.svc h3{font-size:28px;letter-spacing:.02em}
+.price{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700;font-size:28px;color:var(--gold)}
+.svc p{color:var(--muted);font-size:15px;flex:1}
+.dur{color:var(--subtle);font-size:14px}
+.bar .ph{aspect-ratio:4/4.4}
+.bar-b{padding:22px 24px 26px;display:flex;flex-direction:column;gap:8px;flex:1}
+.bar h3{font-size:30px}
+.bar p{color:var(--muted);font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.chips li{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+.bar .more{margin-top:auto;padding-top:10px;align-self:flex-start}
+
+/* Services list page */
+.rows{border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;gap:12px 28px;align-items:center;padding:22px 0;border-bottom:1px solid var(--line)}
+.row h2{font-size:30px}
+.row p{color:var(--muted);font-size:15px;margin-top:4px}
+@media(max-width:700px){.row{grid-template-columns:1fr auto}.row .dur{grid-column:1}.row .btn{grid-column:1/-1}}
+
+/* Gallery */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.strip .ph{aspect-ratio:1;border-radius:8px}
+@media(max-width:700px){.strip{grid-template-columns:repeat(2,1fr)}}
+.gal{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:190px;grid-auto-flow:dense;gap:12px}
+.gi{padding:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:none;display:block}
+.gi .ph{width:100%;height:100%}
+.gi:hover{border-color:var(--gold)}
+.gi:nth-child(1){grid-column:span 2;grid-row:span 2}
+.gi:nth-child(4){grid-row:span 2}
+.gi:nth-child(6){grid-column:span 2}
+@media(max-width:860px){.gal{grid-template-columns:repeat(2,1fr);grid-auto-rows:160px}}
+dialog.lb{border:0;padding:0;background:transparent;width:min(1000px,94vw);max-width:none;color:var(--text);overflow:visible}
+dialog.lb::backdrop{background:rgba(10,10,10,.92)}
+dialog.lb[open]{animation:fade .3s var(--ease)}
+.lb .ph{aspect-ratio:3/2;border-radius:8px;max-height:78vh;width:100%}
+.lb-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}
+.lb-bar p{color:var(--muted);font-size:15px}
+.lb-bar div{display:flex;gap:8px}
+.ib{width:48px;height:48px;border:1px solid #4a4a4a;border-radius:4px;background:var(--surface);font-size:20px;line-height:1}
+.ib:hover{border-color:var(--gold)}
+
+/* How it works */
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:32px}
+.how li{display:flex;flex-direction:column;gap:12px;padding-top:20px;border-top:2px solid var(--line);position:relative}
+.how li::before{content:"";position:absolute;left:0;top:-2px;width:48px;height:2px;background:var(--gold)}
+.how .n{font-size:64px;color:var(--gold);line-height:1}
+.how h3{font-size:26px}
+.how p{color:var(--muted)}
+
+/* Visit */
+.visit{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(28px,5vw,64px)}
+@media(max-width:859px){.visit{grid-template-columns:1fr}}
+.hours{border-top:1px solid var(--line)}
+.hours div{display:flex;justify-content:space-between;gap:16px;padding:13px 0;border-bottom:1px solid var(--line)}
+.hours dt{color:var(--muted)}
+.hours dd{font-weight:500;text-align:right}
+.hours .today dt,.hours .today dd{color:var(--gold)}
+address{font-style:normal;display:flex;flex-direction:column;gap:4px}
+.stack{display:flex;flex-direction:column;gap:26px}
+.map{position:relative;min-height:360px;border-radius:8px;overflow:hidden;border:1px solid var(--line);background:var(--surface)}
+.map::before{content:"Map";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--subtle);font-size:14px}
+.map iframe{position:relative;display:block;width:100%;height:100%;min-height:360px;border:0;filter:invert(.9) hue-rotate(180deg) grayscale(.35)}
+
+/* CTA band */
+.band{background:var(--gold);color:var(--gold-ink);padding:clamp(48px,8vw,72px) 0}
+.band .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px}
+.band h2{font-size:clamp(40px,7vw,64px)}
+.band .btn{background:var(--bg);color:var(--text)}
+.band .btn:hover{background:#000;transform:translateY(-1px)}
+
+/* Footer */
+.ft{border-top:1px solid var(--line);margin-top:0}
+.ft-in{display:flex;flex-wrap:wrap;justify-content:space-between;gap:32px;padding:48px 24px 28px;color:var(--muted);font-size:15px}
+.ft .d{color:var(--text);font-size:22px;letter-spacing:.06em;margin-bottom:8px}
+.ft nav{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:flex-start}
+.ft a:hover{color:var(--gold)}
+.ft-note{padding:0 24px 32px;font-size:13px;color:var(--subtle)}
+.legal{max-width:44em;display:flex;flex-direction:column;gap:16px;color:var(--muted);padding-bottom:64px}
+.legal strong{color:var(--text)}
+
+/* Booking wizard */
+.wz-wrap{padding-top:32px;padding-bottom:clamp(100px,14vw,80px)}
+.steps{display:flex;flex-wrap:wrap;gap:10px 30px;margin-bottom:28px;font-size:15px}
+.steps li{display:flex;align-items:center;gap:10px;color:var(--subtle)}
+.steps li.done{color:var(--muted)}
+.steps li[aria-current="step"]{color:var(--text);font-weight:700}
+.dot{width:28px;height:28px;border-radius:50%;border:1px solid #4a4a4a;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex:none}
+.steps .done .dot{background:var(--surface2);border-color:var(--surface2);color:var(--gold)}
+.steps [aria-current="step"] .dot{background:var(--gold);border-color:var(--gold);color:var(--gold-ink)}
+.dot svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:699px){.steps{gap:8px 14px}.steps .lb2{display:none}.steps [aria-current="step"] .lb2{display:inline}}
+.wz{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}
+@media(max-width:979px){.wz{grid-template-columns:1fr}.sum{display:none}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:clamp(20px,4vw,32px);display:flex;flex-direction:column;gap:24px}
+.panel.in{animation:panelIn .4s var(--ease) both}
+.panel h1{font-size:clamp(32px,5vw,40px)}
+.alert{border:1px solid var(--gold);background:var(--surface2);border-radius:4px;padding:12px 16px;font-size:15px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:12px}
+.opt{display:flex;flex-direction:column;gap:6px;text-align:left;padding:18px 20px;min-height:92px;border:1px solid var(--line);border-radius:6px;background:none;transition:border-color .2s,background .2s}
+.opt:hover{border-color:var(--gold)}
+.opt[aria-pressed="true"]{border-color:var(--gold);background:var(--surface2)}
+.opt .t{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.opt .n{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:600;font-size:24px;text-transform:uppercase}
+.nav-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
+.back{min-height:48px;padding:0 6px;background:none;border:0;color:var(--muted);font-weight:500}
+.back:hover{color:var(--text)}
+.dt{display:flex;flex-wrap:wrap;gap:32px}
+.cal{flex:1 1 330px;min-width:0;display:flex;flex-direction:column;gap:14px}
+.cal-hd{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.cal-hd h2{font-size:clamp(28px,4vw,34px)}
+.cal-hd div{display:flex;gap:8px}
+.nb{width:44px;height:44px;border:1px solid var(--line);background:none;border-radius:4px;font-size:20px;line-height:1}
+.nb:hover:not(:disabled){border-color:var(--gold)}
+.nb:disabled{color:#5f5b53;cursor:not-allowed}
+.dows,.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.dows{font-size:12px;color:var(--subtle);text-align:center}
+.day{height:48px;border-radius:4px;border:1px solid #333;background:var(--surface2);font-weight:500;transition:border-color .15s,background .15s}
+.day:hover:not(:disabled){border-color:var(--gold)}
+.day:disabled{border-color:transparent;background:none;color:#6f6b62;cursor:not-allowed}
+.day.today{box-shadow:inset 0 -3px 0 var(--gold)}
+.day.sel{background:var(--gold);border-color:var(--gold);color:var(--gold-ink);font-weight:700}
+.day.pop{animation:pop .3s var(--ease)}
+.day-sk{height:48px;border-radius:4px;background:var(--surface2)}
+.times{flex:1 1 280px;min-width:0;display:flex;flex-direction:column;gap:16px}
+.times h2{font-size:26px;font-weight:600}
+.slots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.slot{height:48px;border:1px solid var(--gold);background:none;color:var(--gold);border-radius:4px;font-size:14px;font-weight:500;transition:background .15s}
+.slot:hover{background:var(--surface2)}
+.slot[aria-pressed="true"]{background:var(--gold);color:var(--gold-ink);font-weight:700}
+.slots.in .slot{animation:fade .35s var(--ease) both;animation-delay:calc(var(--i) * 20ms)}
+.empty{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+.sum{position:sticky;top:96px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:26px;display:flex;flex-direction:column;gap:18px}
+.sum h2{font-size:22px;color:var(--gold);font-weight:700}
+@media(max-width:979px){.sum{display:none}}
+.kv{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--line)}
+.kv:last-child{border-bottom:0}
+.kv span:first-child{color:var(--muted)}
+.kv span:last-child{text-align:right;font-weight:500}
+.kv .big{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:28px;font-weight:700;color:var(--gold)}
+.box{border:1px solid var(--line);border-radius:6px;padding:6px 20px}
+.mbar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:none;align-items:center;justify-content:space-between;gap:12px;background:var(--surface);border-top:1px solid var(--line);padding:12px 16px calc(14px + env(safe-area-inset-bottom))}
+@media(max-width:979px){.mbar.on{display:flex;animation:fade .3s var(--ease)}}
+.mbar p{margin:0}
+.mbar .a{font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mbar .b{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mbar>div{min-width:0}
+form.f{display:flex;flex-direction:column;gap:18px}
+.fld{display:flex;flex-direction:column;gap:8px;font-size:15px;font-weight:500}
+.fld input,.fld textarea{width:100%;min-height:48px;padding:10px 14px;border:1px solid var(--line);border-radius:4px;background:var(--surface2);font-weight:400;font-size:16px}
+.fld textarea{min-height:104px;resize:vertical}
+.fld input::placeholder,.fld textarea::placeholder{color:var(--subtle)}
+.fld input:focus,.fld textarea:focus{border-color:var(--gold)}
+.fld input[aria-invalid="true"]{border-color:#d17b6a}
+.err{font-size:13px;font-weight:400;color:#e59a8b}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.ok-wrap{max-width:640px;margin:0 auto;padding:clamp(40px,8vw,72px) 24px;display:flex;flex-direction:column;gap:24px}
+.ok-wrap h1{font-size:clamp(48px,9vw,72px)}
+.check{width:72px;height:72px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center}
+.check svg{width:36px;height:36px;stroke:var(--gold);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:40;animation:draw .6s var(--ease) .25s forwards}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+  .hero h1 .ln>span{transform:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#app">Skip to content</a>
+
+<!-- Icons used by the photo fallback -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-scissors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.1 7.9 20 17M8.1 16.1 20 7"/></symbol>
+  <symbol id="i-comb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="6" rx="1.5"/><path d="M6 13v6M9 13v6M12 13v6M15 13v6M18 13v6"/></symbol>
+  <symbol id="i-razor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17 17 4l3 3L7 20z"/><path d="M14 7l3 3"/></symbol>
+  <symbol id="i-chair" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10v8H7zM5 11h14v4H5zM12 15v5M8 20h8"/></symbol>
+  <symbol id="i-mirror" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M12 15v6M9 21h6"/></symbol>
+</svg>
+
+<header class="hd">
+  <div class="wrap hd-in">
+    <a class="brand d" href="#/">MH Men's <b>Parlour</b></a>
+    <nav id="nav" class="nav" aria-label="Main">
+      <a href="#/services" data-nav="/services">Services</a>
+      <a href="#/barbers" data-nav="/barbers">Barbers</a>
+      <a href="#/gallery" data-nav="/gallery">Gallery</a>
+      <a href="#/contact" data-nav="/contact">Contact</a>
+    </nav>
+    <div class="hd-act">
+      <a class="btn btn-gold btn-sm" href="#/book">Book Now</a>
+      <button class="menu" type="button" aria-expanded="false" aria-controls="nav" data-act="menu">Menu</button>
+    </div>
+  </div>
+</header>
+
+<main id="app" tabindex="-1"></main>
+
+<noscript><p style="padding:24px">This page needs JavaScript to show the booking demo.</p></noscript>
+
+<footer class="ft">
+  <div class="wrap ft-in">
+    <div>
+      <p class="d">MH Men's Parlour</p>
+      <address>
+        <span>Uttara Diyabari, Mirin Mart By Hur 2nd floor (near Mailstone School &amp; College), Dhaka 1230, Bangladesh</span>
+        <a href="tel:+8801313946091">01313-946091</a>
+      </address>
+    </div>
+    <nav aria-label="Footer">
+      <a href="#/services">Services</a>
+      <a href="#/barbers">Barbers</a>
+      <a href="#/gallery">Gallery</a>
+      <a href="#/contact">Contact</a>
+      <a href="#/privacy">Privacy</a>
+      <a href="#/terms">Terms</a>
+    </nav>
+  </div>
+  <p class="wrap ft-note">Concept demo prepared by Tanjid for MH Men's Parlour. Not affiliated with or endorsed by the shop. Demo preview. Stylist names, prices and photos are placeholders, and bookings made here are stored only in this browser.</p>
+</footer>
+
+<dialog class="lb" id="lb" aria-label="Photo viewer"></dialog>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- Demo data (PLACEHOLDERS: replace with real shop data) ---------- */
+var SHOP={address:"Uttara Diyabari, Mirin Mart By Hur 2nd floor (near Mailstone School & College), Dhaka 1230, Bangladesh",phone:"01313-946091"};
+var SHOPNAME="MH Men's Parlour",CITY="Uttara",TZNOTE="Times shown in Bangladesh time (Dhaka, UTC+6)",PHONEC="bd";
+var MAPQ="MH+Men's+Parlour+Uttara+Diyabari%2C+Dhaka+1230%2C+Bangladesh";
+var SERVICES=[{"id":"s1","name":"Haircut","price":300,"dur":30,"desc":"A clean cut finished with a sharp neckline and style."},{"id":"s2","name":"Beard Trim","price":150,"dur":30,"desc":"Shaped and tidied with a sharp, even edge."},{"id":"s3","name":"Manicure","price":400,"dur":30,"desc":"Neat, clean hands with careful nail care."},{"id":"s4","name":"Pedicure","price":500,"dur":60,"desc":"Relaxing foot care and a tidy finish."}];
+var BARBERS=[{"id":"b1","name":"Rafi","bio":"Haircuts, fades and beard shaping.","svc":["s1","s2"],"ph":0},{"id":"b2","name":"Sumon","bio":"Full grooming: cuts, beard, manicure and pedicure.","svc":["s1","s2","s3","s4"],"ph":1}];
+/* open hours by weekday (0=Sun) as minutes from midnight; null = closed */
+var HOURS={"0":[[540,1320]],"1":[[540,1320]],"2":[[540,1320]],"3":[[540,1320]],"4":[[540,1320]],"5":[[540,1320]],"6":[[540,1320]]};
+var DAYNAMES=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+var STEP=30,LEAD=60,MAX_ADV=30,TZ="Asia/Dhaka";
+
+/* Stock photos (Unsplash ids). If one fails to load, the drawn fallback stays visible. */
+var PHOTOS=[
+ {id:"1503951914875-452162b0f3f1",alt:"Barber giving a haircut",icon:"scissors"},
+ {id:"1585747860715-2ba37e788b70",alt:"Barber working on a fade",icon:"comb"},
+ {id:"1599351431202-1e0f0137899a",alt:"Inside a barber shop",icon:"chair"},
+ {id:"1621605815971-fbc98d665033",alt:"Barber using clippers",icon:"razor"},
+ {id:"1605497788044-5a32c7078486",alt:"Beard being trimmed",icon:"razor"},
+ {id:"1622286342621-4bd786c2447c",alt:"Barber shop chairs and mirrors",icon:"mirror"},
+ {id:"1532710093739-9470acff878f",alt:"Barber tools on a counter",icon:"comb"},
+ {id:"1512690459411-b9245aed614b",alt:"Classic barber chair",icon:"chair"}
+];
+
+/* ---------- Helpers ---------- */
+function $(s,r){return (r||document).querySelector(s)}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function pad(n){return String(n).padStart(2,"0")}
+function money(n){return "Tk "+n}
+function fmtMin(m){var h=Math.floor(m/60),mm=m%60;return (h%12||12)+":"+pad(mm)+" "+(h>=12?"PM":"AM")}
+function parts(d){var p=new Intl.DateTimeFormat("en-CA",{timeZone:TZ,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(d),o={};p.forEach(function(x){o[x.type]=+x.value});return o}
+function chicagoNow(){var p=parts(new Date());return {date:p.year+"-"+pad(p.month)+"-"+pad(p.day),min:p.hour*60+p.minute}}
+function toUTCDate(s){var a=s.split("-").map(Number);return new Date(Date.UTC(a[0],a[1]-1,a[2]))}
+function toYmd(d){return d.toISOString().slice(0,10)}
+function addDays(s,n){var d=toUTCDate(s);d.setUTCDate(d.getUTCDate()+n);return toYmd(d)}
+function dow(s){return toUTCDate(s).getUTCDay()}
+function longDay(s){return new Intl.DateTimeFormat("en-US",{timeZone:"UTC",weekday:"long",month:"long",day:"numeric"}).format(toUTCDate(s))}
+function shortDay(s){return new Intl.DateTimeFormat("en-US",{timeZone:"UTC",weekday:"short",month:"short",day:"numeric"}).format(toUTCDate(s))}
+function monthTitle(m){return new Intl.DateTimeFormat("en-US",{timeZone:"UTC",month:"long",year:"numeric"}).format(toUTCDate(m+"-01"))}
+function shiftMonth(m,n){var a=m.split("-").map(Number),d=new Date(Date.UTC(a[0],a[1]-1+n,1));return d.getUTCFullYear()+"-"+pad(d.getUTCMonth()+1)}
+function svcById(id){return SERVICES.filter(function(s){return s.id===id})[0]||null}
+function barById(id){return BARBERS.filter(function(b){return b.id===id})[0]||null}
+function hash(str){var h=2166136261;for(var i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function hoursLabel(d){var iv=HOURS[d];return iv?fmtMin(iv[0][0])+" – "+fmtMin(iv[iv.length-1][1]):"Closed"}
+
+function icon(name){return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-'+name+'"/></svg>'}
+function photo(i,opts){
+  opts=opts||{};var p=PHOTOS[i%PHOTOS.length],w=opts.w||900;
+  return '<figure class="ph '+(opts.cls||"")+'">'+icon(p.icon)+
+   '<img src="https://images.unsplash.com/photo-'+p.id+'?auto=format&fit=crop&w='+w+'&q=70" alt="'+esc(p.alt)+'" loading="'+(opts.eager?"eager":"lazy")+'" decoding="async" referrerpolicy="no-referrer" onload="this.classList.add(\'ok\')" onerror="this.remove()"></figure>';
+}
+
+/* ---------- Demo bookings (browser only) ---------- */
+var memBookings=[];
+function loadBookings(){try{return JSON.parse(localStorage.getItem("lbbs-demo-bookings"))||[]}catch(e){return memBookings}}
+function saveBookings(a){memBookings=a;try{localStorage.setItem("lbbs-demo-bookings",JSON.stringify(a))}catch(e){}}
+
+/* ---------- Availability (demo engine) ---------- */
+function busyCells(barberId,date){
+  var set={},iv=HOURS[dow(date)];if(!iv)return set;
+  var dayOff=hash(barberId+date)%11===0;
+  iv.forEach(function(r){for(var m=r[0];m<r[1];m+=STEP){if(dayOff||hash(barberId+date+m)%100<28)set[m]=1}});
+  loadBookings().forEach(function(b){if(b.barber===barberId&&b.date===date){for(var k=0;k<b.cells;k++)set[b.start+k*STEP]=1}});
+  return set;
+}
+function slotsFor(barberId,serviceId,date){
+  var svc=svcById(serviceId);if(!svc)return [];
+  var iv=HOURS[dow(date)];if(!iv)return [];
+  var now=chicagoNow();if(date<now.date||date>addDays(now.date,MAX_ADV))return [];
+  var cells=Math.ceil(svc.dur/STEP),busy=busyCells(barberId,date),out=[];
+  iv.forEach(function(r){
+    for(var m=r[0];m+cells*STEP<=r[1];m+=STEP){
+      if(date===now.date&&m<now.min+LEAD)continue;
+      var ok=true;for(var k=0;k<cells;k++){if(busy[m+k*STEP]){ok=false;break}}
+      if(ok)out.push(m);
+    }
+  });
+  return out;
+}
+function chicagoToUTC(date,min){
+  var a=date.split("-").map(Number),want=Date.UTC(a[0],a[1]-1,a[2],Math.floor(min/60),min%60),t=want;
+  for(var i=0;i<2;i++){var p=parts(new Date(t));t-=(Date.UTC(p.year,p.month-1,p.day,p.hour,p.minute)-want)}
+  return new Date(t);
+}
+
+/* ---------- Pages ---------- */
+function svcCard(s){
+  return '<a class="card svc" href="#/book?service='+s.id+'"><div class="svc-top"><h3 class="d">'+esc(s.name)+'</h3><span class="price">'+money(s.price)+'</span></div><p>'+esc(s.desc)+'</p><span class="dur">'+s.dur+' min</span></a>';
+}
+function barCard(b){
+  var chips=b.svc.map(function(id){return '<li>'+esc(svcById(id).name)+'</li>'}).join("");
+  return '<article class="card bar hov">'+photo(b.ph,{w:700})+'<div class="bar-b"><h3 class="d">'+esc(b.name)+'</h3><p>'+esc(b.bio)+'</p><ul class="chips">'+chips+'</ul><a class="more" href="#/book?barber='+b.id+'">Book with '+esc(b.name)+'</a></div></article>';
+}
+function hoursList(){
+  var today=dow(chicagoNow().date),order=[1,2,3,4,5,6,0];
+  return '<dl class="hours">'+order.map(function(d){return '<div'+(d===today?' class="today"':'')+'><dt>'+DAYNAMES[d]+'</dt><dd>'+hoursLabel(d)+'</dd></div>'}).join("")+'</dl>';
+}
+function mapEmbed(){return '<div class="map"><iframe title="Map showing '+esc(SHOPNAME)+'" src="https://www.google.com/maps?q='+MAPQ+'&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>'}
+var CHECK='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+
+function home(){
+  var html=
+  '<section class="wrap hero">'+
+    '<div class="hero-copy">'+
+      '<p class="kicker seq" style="--d:.05s">'+esc(SHOP.address)+'</p>'+
+      '<h1 class="d"><span class="ln"><span>A proper cut.</span></span><span class="ln"><span>Booked in a minute.</span></span></h1>'+
+      '<p class="lead seq" style="--d:.45s">Premium grooming for modern men. Haircuts, beard trims, manicure and pedicure. Choose your stylist, pick a time that is actually free, and you are in the chair. No account needed.</p>'+
+      '<div class="cta-row seq" style="--d:.6s"><a class="btn btn-gold btn-lg" href="#/book">Book an appointment</a><a class="btn btn-ghost btn-lg" href="#/services">See services</a></div>'+
+      '<ul class="ticks seq" style="--d:.75s"><li>'+'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Live availability</li><li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M4 7l8 6 8-6"/></svg>Email confirmation</li><li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Cancel from your email</li></ul>'+
+    '</div>'+
+    '<div class="hero-art"><div class="pole" aria-hidden="true"><i class="cap"></i><div class="tube"></div><i class="cap"></i></div><div class="frame ph-frame">'+photo(0,{cls:"frame-ph",w:1000,eager:true})+'</div></div>'+
+  '</section>'+
+
+  '<section class="sec alt"><div class="wrap"><div class="sh"><h2 class="d">What we do</h2><a class="more" href="#/services">All services</a></div><div class="grid g-svc">'+SERVICES.map(svcCard).join("")+'</div></div></section>'+
+
+  '<section class="sec"><div class="wrap"><div class="sh"><h2 class="d">Pick your barber</h2><a class="more" href="#/barbers">Meet the team</a></div><div class="grid g-bar">'+BARBERS.map(barCard).join("")+'</div></div></section>'+
+
+  '<section class="sec alt"><div class="wrap"><div class="sh"><h2 class="d">Around the shop</h2><a class="more" href="#/gallery">See the gallery</a></div><div class="strip">'+[2,3,4,5].map(function(i){return '<a class="hov" href="#/gallery" aria-label="Open the gallery">'+photo(i,{w:600})+'</a>'}).join("")+'</div></div></section>'+
+
+  '<section class="sec"><div class="wrap"><div class="sh"><h2 class="d">Three steps, no sign-up</h2></div><ol class="how">'+
+    '<li><span class="n d">1</span><h3 class="d">Choose service and barber</h3><p>Pick what you need and who you want to see.</p></li>'+
+    '<li><span class="n d">2</span><h3 class="d">Pick an open time</h3><p>Only times that are actually free are shown, in local shop time.</p></li>'+
+    '<li><span class="n d">3</span><h3 class="d">Get your confirmation</h3><p>An email arrives with your details and a link to change or cancel.</p></li></ol></div></section>'+
+
+  '<section class="sec alt"><div class="wrap visit"><div class="stack"><div class="sh" style="margin:0"><h2 class="d">Hours &amp; location</h2></div>'+hoursList()+
+    '<address><strong>'+esc(SHOP.address)+'</strong><a class="muted" href="tel:+8801313946091">'+esc(SHOP.phone)+'</a></address>'+
+    '<div class="cta-row"><a class="btn btn-ghost" href="https://www.google.com/maps/dir/?api=1&destination='+MAPQ+'" target="_blank" rel="noopener">Get directions</a><a class="btn btn-ghost" href="tel:+8801313946091">Call the shop</a></div></div>'+mapEmbed()+'</div></section>'+
+
+  '<section class="band"><div class="wrap"><h2 class="d">Your chair is waiting.</h2><a class="btn btn-lg" href="#/book">Book an appointment</a></div></section>';
+  return {title:"Book Online",html:html};
+}
+
+function servicesPage(){
+  var rows=SERVICES.map(function(s){return '<div class="row"><div><h2 class="d">'+esc(s.name)+'</h2><p>'+esc(s.desc)+'</p></div><span class="dur">'+s.dur+' min</span><span class="price">'+money(s.price)+'</span><a class="btn btn-gold btn-sm" href="#/book?service='+s.id+'">Book '+esc(s.name)+'</a></div>'}).join("");
+  return {title:"Services",html:'<div class="wrap"><div class="page-h"><h1 class="d">Services</h1><p>Straightforward prices, and the time each service takes. Prices shown are demo values.</p></div><div class="rows" style="margin-bottom:80px">'+rows+'</div></div>'};
+}
+function barbersPage(){
+  return {title:"Barbers",html:'<div class="wrap"><div class="page-h"><h1 class="d">The team</h1><p>Choose who cuts your hair. Each barber has their own schedule, so you only see times they are free.</p></div><div class="grid g-bar" style="margin-bottom:80px">'+BARBERS.map(barCard).join("")+'</div></div>'};
+}
+function galleryPage(){
+  var items=PHOTOS.map(function(p,i){return '<button class="gi hov" type="button" data-act="lb" data-i="'+i+'" aria-label="Open photo: '+esc(p.alt)+'">'+photo(i,{w:800})+'</button>'}).join("");
+  return {title:"Gallery",html:'<div class="wrap"><div class="page-h"><h1 class="d">Gallery</h1><p>A look at the shop and the work. Demo photos shown here.</p></div><div class="gal" style="margin-bottom:80px">'+items+'</div></div>'};
+}
+function contactPage(){
+  return {title:"Contact",html:'<div class="wrap"><div class="page-h"><h1 class="d">Visit the shop</h1><p>Walk-ins are welcome when a chair is free. Booking ahead guarantees your time.</p></div><div class="visit" style="padding-bottom:80px"><div class="stack"><address><strong>'+esc(SHOP.address)+'</strong><a class="muted" href="tel:+8801313946091">'+esc(SHOP.phone)+'</a></address>'+hoursList()+'<div class="cta-row"><a class="btn btn-gold" href="#/book">Book online</a><a class="btn btn-ghost" href="https://www.google.com/maps/dir/?api=1&destination='+MAPQ+'" target="_blank" rel="noopener">Get directions</a><a class="btn btn-ghost" href="tel:+8801313946091">Call the shop</a></div></div>'+mapEmbed()+'</div></div>'};
+}
+function legal(title){
+  return {title:title,html:'<div class="wrap"><div class="page-h"><h1 class="d">'+esc(title)+'</h1></div><div class="legal"><p><strong>Placeholder text. This page needs legal review before the site goes live.</strong></p><p>Explain here what personal details the shop collects when you book (name, phone number and email), why they are collected, how long they are kept, and who can see them.</p><p>Explain here the booking rules: how to cancel or change an appointment, what happens if you arrive late, and how to contact the shop.</p></div></div>'};
+}
+function notFound(){
+  return {title:"Page not found",html:'<div class="wrap"><div class="page-h" style="padding-bottom:80px"><h1 class="d">Page not found</h1><p>That page does not exist. Try the home page or book an appointment.</p><div class="cta-row" style="margin-top:24px"><a class="btn btn-gold" href="#/">Go to home</a><a class="btn btn-ghost" href="#/book">Book an appointment</a></div></div></div>'};
+}
+
+/* ---------- Booking wizard ---------- */
+var W={s:null,anim:false,slotAnim:false,pop:null,focusH1:false,busy:false,err:"",errs:{},done:null};
+var STEPS=["Service","Barber","Date & time","Your details","Review"];
+function newKey(){return (window.crypto&&crypto.randomUUID)?crypto.randomUUID():String(Date.now())+Math.random()}
+function monthBounds(){var n=chicagoNow();return {min:n.date.slice(0,7),max:addDays(n.date,MAX_ADV).slice(0,7),today:n.date}}
+function persist(){try{sessionStorage.setItem("lbbs-wiz",JSON.stringify(W.s))}catch(e){}}
+function normalize(s){
+  var mb=monthBounds();
+  if(!s||typeof s!=="object")s={};
+  s.form=s.form&&typeof s.form==="object"?s.form:{};
+  ["name","phone","email","note"].forEach(function(k){s.form[k]=typeof s.form[k]==="string"?s.form[k]:""});
+  if(!svcById(s.serviceId))s.serviceId=null;
+  if(!barById(s.barberId))s.barberId=null;
+  if(s.serviceId&&s.barberId&&barById(s.barberId).svc.indexOf(s.serviceId)<0)s.barberId=null;
+  if(!s.month||s.month<mb.min||s.month>mb.max)s.month=mb.min;
+  if(typeof s.date!=="string"||s.date<mb.today||s.date>addDays(mb.today,MAX_ADV))s.date=null;
+  if(!s.date||typeof s.time!=="number")s.time=null;
+  if(s.time!==null&&!(s.serviceId&&s.barberId&&slotsFor(s.barberId,s.serviceId,s.date).indexOf(s.time)>=0))s.time=null;
+  s.step=+s.step||1;
+  if(!s.serviceId)s.step=1;
+  else if(!s.barberId&&s.step>2)s.step=2;
+  else if(s.step>=4&&s.time===null)s.step=3;
+  if(s.step>5)s.step=5;
+  s.key=s.key||newKey();
+  return s;
+}
+function wizInit(q){
+  var s=null;try{s=JSON.parse(sessionStorage.getItem("lbbs-wiz"))}catch(e){}
+  s=normalize(s);
+  var sv=q.get("service"),br=q.get("barber");
+  if(sv&&svcById(sv)){
+    s.serviceId=sv;s.date=null;s.time=null;
+    if(br&&barById(br)&&barById(br).svc.indexOf(sv)>=0){s.barberId=br;s.step=3}
+    else{if(s.barberId&&barById(s.barberId).svc.indexOf(sv)<0)s.barberId=null;s.step=s.barberId?3:2}
+  }else if(br&&barById(br)){s.barberId=br;s.serviceId=null;s.date=null;s.time=null;s.step=1}
+  W.s=normalize(s);W.done=null;W.err="";W.errs={};W.anim=true;W.focusH1=false;
+  if(sv||br){try{history.replaceState(null,"",location.pathname+location.search+"#/book")}catch(e){}}
+  persist();render();
+}
+function summaryRows(){
+  var s=W.s,sv=svcById(s.serviceId),b=barById(s.barberId);
+  return '<div class="kv"><span>Service</span><span>'+(sv?esc(sv.name):"Not chosen yet")+'</span></div>'+
+   '<div class="kv"><span>Barber</span><span>'+(b?esc(b.name):"Not chosen yet")+'</span></div>'+
+   '<div class="kv"><span>Duration</span><span>'+(sv?sv.dur+" min":"–")+'</span></div>'+
+   '<div class="kv"><span>When</span><span>'+(s.date&&s.time!==null?esc(shortDay(s.date))+" at "+fmtMin(s.time):"Not chosen yet")+'</span></div>'+
+   '<div class="kv"><span>Price</span><span class="big">'+(sv?money(sv.price):"–")+'</span></div>';
+}
+function stepsHtml(cur){
+  return '<ol class="steps" aria-label="Booking steps">'+STEPS.map(function(l,i){
+    var n=i+1,st=n<cur?"done":"";
+    return '<li class="'+st+'"'+(n===cur?' aria-current="step"':'')+'><span class="dot">'+(n<cur?CHECK:n)+'</span><span class="lb2">'+l+'</span></li>';
+  }).join("")+'</ol>';
+}
+function calendarHtml(){
+  var s=W.s,mb=monthBounds(),first=dow(s.month+"-01"),days=new Date(Date.UTC(+s.month.slice(0,4),+s.month.slice(5,7),0)).getUTCDate(),cells="";
+  for(var i=0;i<first;i++)cells+="<span></span>";
+  for(var d=1;d<=days;d++){
+    var ymd=s.month+"-"+pad(d),open=slotsFor(s.barberId,s.serviceId,ymd).length>0,sel=s.date===ymd;
+    var cls="day"+(sel?" sel":"")+(sel&&W.pop===ymd?" pop":"")+(ymd===mb.today?" today":"");
+    cells+='<button type="button" class="'+cls+'" data-fid="d'+ymd+'" data-act="day" data-d="'+ymd+'" '+(open?"":"disabled ")+'aria-pressed="'+sel+'" aria-label="'+esc(longDay(ymd))+(open?"":", unavailable")+'">'+d+'</button>';
+  }
+  return '<div class="cal"><div class="cal-hd"><h2 class="d" aria-live="polite">'+monthTitle(s.month)+'</h2><div>'+
+    '<button type="button" class="nb" data-act="month" data-n="-1" aria-label="Previous month" '+(s.month<=mb.min?"disabled":"")+'>&#8249;</button>'+
+    '<button type="button" class="nb" data-act="month" data-n="1" aria-label="Next month" '+(s.month>=mb.max?"disabled":"")+'>&#8250;</button></div></div>'+
+    '<div class="dows" aria-hidden="true"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>'+
+    '<div class="days" role="group" aria-label="'+monthTitle(s.month)+'">'+cells+'</div><p class="small">Greyed days are closed or fully booked.</p></div>';
+}
+function timesHtml(){
+  var s=W.s,out='<div class="times"><div><h2 class="d">'+(s.date?esc(longDay(s.date)):"Pick a day")+'</h2><p class="small">'+esc(TZNOTE)+'</p></div>';
+  if(!s.date)return out+'<p class="muted">Choose a day on the calendar to see open times.</p></div>';
+  var sl=slotsFor(s.barberId,s.serviceId,s.date);
+  if(!sl.length)return out+'<div class="empty"><p class="muted">No openings this day.</p><button type="button" class="btn btn-ghost btn-sm" data-act="jump">Jump to next available day</button></div></div>';
+  var anim=W.slotAnim;
+  return out+'<div class="slots'+(anim?" in":"")+'" role="group" aria-label="Available times">'+sl.map(function(m,i){
+    return '<button type="button" class="slot" style="--i:'+i+'" data-fid="t'+m+'" data-act="time" data-m="'+m+'" aria-pressed="'+(s.time===m)+'">'+fmtMin(m)+'</button>';
+  }).join("")+'</div></div>';
+}
+function field(id,label,type,val,extra,err){
+  return '<label class="fld">'+label+'<input id="f-'+id+'" name="'+id+'" type="'+type+'" value="'+esc(val)+'" data-field="'+id+'" '+(extra||"")+(err?' aria-invalid="true" aria-describedby="e-'+id+'"':'')+'>'+(err?'<span class="err" id="e-'+id+'" role="alert">'+esc(err)+'</span>':'')+'</label>';
+}
+function panelHtml(){
+  var s=W.s,sv=svcById(s.serviceId),b=barById(s.barberId),h="";
+  var alert=W.err?'<p class="alert" role="alert">'+esc(W.err)+'</p>':"";
+  if(s.step===1){
+    h='<h1 class="d" tabindex="-1">Choose a service</h1><div class="opts">'+SERVICES.map(function(x){return '<button type="button" class="opt" data-fid="s'+x.id+'" data-act="svc" data-id="'+x.id+'" aria-pressed="'+(s.serviceId===x.id)+'"><span class="t"><span class="n">'+esc(x.name)+'</span><span class="price">'+money(x.price)+'</span></span><span class="dur">'+x.dur+' min</span></button>'}).join("")+'</div>';
+  }else if(s.step===2){
+    var list=BARBERS.filter(function(x){return x.svc.indexOf(s.serviceId)>=0});
+    h='<h1 class="d" tabindex="-1">Choose your barber</h1><div class="opts">'+list.map(function(x){return '<button type="button" class="opt" data-fid="b'+x.id+'" data-act="bar" data-id="'+x.id+'" aria-pressed="'+(s.barberId===x.id)+'"><span class="n">'+esc(x.name)+'</span><span class="muted" style="font-size:15px">'+esc(x.bio)+'</span></button>'}).join("")+'</div>'+
+      (list.length?'':'<p class="muted">No barber offers this service right now. Please call '+esc(SHOP.phone)+'.</p>')+
+      '<div class="nav-row"><button type="button" class="back" data-act="go" data-s="1">&#8592; Back</button></div>';
+  }else if(s.step===3){
+    h='<h1 class="sr" tabindex="-1">Choose a date and time</h1><div class="dt">'+calendarHtml()+timesHtml()+'</div>'+
+      '<div class="nav-row"><button type="button" class="back" data-act="go" data-s="'+(2)+'">&#8592; Back</button><button type="button" class="btn btn-gold btn-lg" data-act="go" data-s="4" '+(s.time===null?"disabled":"")+'>'+(s.time===null?"Choose a time to continue":"Continue")+'</button></div>';
+  }else if(s.step===4){
+    var E=W.errs;
+    h='<h1 class="d" tabindex="-1">Your details</h1><form class="f" novalidate data-form="details">'+
+      field("name","Full name","text",s.form.name,'autocomplete="name"',E.name)+
+      field("phone","Phone","tel",s.form.phone,'autocomplete="tel" inputmode="tel" placeholder="01712-345678"',E.phone)+
+      field("email","Email","email",s.form.email,'autocomplete="email"',E.email)+
+      '<label class="fld">Note for your barber (optional)<textarea name="note" data-field="note">'+esc(s.form.note)+'</textarea></label>'+
+      '<div class="hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off" data-hp></label></div>'+
+      '<div class="nav-row"><button type="button" class="back" data-act="go" data-s="3">&#8592; Back</button><button type="submit" class="btn btn-gold btn-lg">Review booking</button></div></form>';
+  }else{
+    h='<h1 class="d" tabindex="-1">Review and confirm</h1><div class="box">'+
+      '<div class="kv"><span>Service</span><span>'+esc(sv.name)+'</span></div><div class="kv"><span>Barber</span><span>'+esc(b.name)+'</span></div>'+
+      '<div class="kv"><span>When</span><span>'+esc(longDay(s.date))+' at '+fmtMin(s.time)+'</span></div><div class="kv"><span>Name</span><span>'+esc(s.form.name)+'</span></div>'+
+      '<div class="kv"><span>Phone</span><span>'+esc(s.form.phone)+'</span></div><div class="kv"><span>Email</span><span>'+esc(s.form.email)+'</span></div>'+
+      '<div class="kv"><span>Price</span><span class="big">'+money(sv.price)+'</span></div></div>'+
+      '<p class="small">You pay at the shop. You can cancel or change your time from the link in your confirmation email.</p>'+
+      '<div class="nav-row"><button type="button" class="back" data-act="go" data-s="4">&#8592; Back</button><button type="button" class="btn btn-gold btn-lg" data-act="confirm" '+(W.busy?"disabled":"")+'>'+(W.busy?"Booking…":"Confirm booking")+'</button></div>';
+  }
+  return '<section class="panel'+(W.anim?" in":"")+'" aria-live="polite">'+alert+h+'</section>';
+}
+function wizardHtml(){
+  var s=W.s,mobile=s.step===3?'<div class="mbar on"><div><p class="a">'+esc((svcById(s.serviceId)||{name:""}).name)+' · '+esc((barById(s.barberId)||{name:""}).name)+'</p><p class="b">'+(s.time!==null?esc(shortDay(s.date))+" at "+fmtMin(s.time):"Choose a time")+'</p></div><button type="button" class="btn btn-gold" data-act="go" data-s="4" '+(s.time===null?"disabled":"")+'>Continue</button></div>':"";
+  return '<div class="wrap wz-wrap">'+stepsHtml(s.step)+'<div class="wz">'+panelHtml()+'<aside class="sum" aria-label="Your appointment"><h2 class="d">Your appointment</h2><div>'+summaryRows()+'</div><p class="small">No account needed. Your confirmation and a cancel link are sent by email.</p></aside></div></div>'+mobile;
+}
+function successHtml(){
+  var d=W.done;
+  return '<div class="ok-wrap"><div class="check">'+'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><h1 class="d" tabindex="-1">You are all set.</h1>'+
+   '<div class="box"><div class="kv"><span>Service</span><span>'+esc(d.svc)+'</span></div><div class="kv"><span>Barber</span><span>'+esc(d.barber)+'</span></div><div class="kv"><span>When</span><span>'+esc(longDay(d.date))+' at '+fmtMin(d.time)+'</span></div><div class="kv"><span>Where</span><span>'+esc(SHOP.address)+'</span></div><div class="kv"><span>Price</span><span class="big">'+money(d.price)+'</span></div></div>'+
+   '<p class="muted">A confirmation with a link to change or cancel is on its way to '+esc(d.email)+'. Questions? Call '+esc(SHOP.phone)+'.</p><p class="small">Demo: no email was sent and this booking is saved only in this browser.</p>'+
+   '<div class="cta-row"><button type="button" class="btn btn-gold" data-act="ics">Add to calendar</button><a class="btn btn-ghost" href="#/">Back to home</a><button type="button" class="btn btn-ghost" data-act="again">Book another</button></div></div>';
+}
+function render(){
+  var root=$("#wz");if(!root)return;
+  var ae=document.activeElement,fid=ae&&ae.dataset?ae.dataset.fid:null;
+  root.innerHTML=W.done?successHtml():wizardHtml();
+  var h1=$("h1",root);
+  if(W.focusH1&&h1){h1.focus({preventScroll:true});window.scrollTo({top:0,behavior:"instant"})}
+  else if(fid){var el=root.querySelector('[data-fid="'+fid+'"]');if(el&&!el.disabled)el.focus({preventScroll:true})}
+  W.anim=false;W.slotAnim=false;W.pop=null;W.focusH1=false;
+}
+function goStep(n){W.s.step=n;W.err="";W.errs={};W.anim=true;W.focusH1=true;persist();render()}
+function validate(){
+  var f=W.s.form,e={};
+  if(f.name.trim().length<2)e.name="Enter your full name.";
+  var digits=f.phone.replace(/\D/g,"");
+  if(PHONEC==="bd"){if(!/^(?:88)?01[3-9]\d{8}$/.test(digits))e.phone="Enter a valid mobile number, like 01712-345678."}
+  else{digits=digits.replace(/^1/,"");if(digits.length!==10)e.phone="Enter a 10-digit US phone number."}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.trim()))e.email="Enter a valid email address.";
+  W.errs=e;return Object.keys(e).length===0;
+}
+function jumpNext(){
+  var s=W.s,mb=monthBounds(),from=s.date||addDays(mb.today,-1),limit=addDays(mb.today,MAX_ADV);
+  for(var d=addDays(from,1);d<=limit;d=addDays(d,1)){
+    if(slotsFor(s.barberId,s.serviceId,d).length){s.date=d;s.time=null;s.month=d.slice(0,7);W.pop=d;W.slotAnim=true;persist();render();return}
+  }
+  W.err="No open days in the next "+MAX_ADV+" days for this barber. Try another barber or call "+SHOP.phone+".";render();
+}
+function confirmBooking(){
+  var s=W.s,sv=svcById(s.serviceId),b=barById(s.barberId);
+  if(W.busy)return;
+  var hp=$("[data-hp]");if(hp&&hp.value)return;
+  W.busy=true;render();
+  setTimeout(function(){
+    W.busy=false;
+    if(slotsFor(s.barberId,s.serviceId,s.date).indexOf(s.time)<0){
+      W.err="That time was just taken, please pick another.";s.time=null;s.step=3;W.anim=true;W.slotAnim=true;W.focusH1=true;persist();render();return;
+    }
+    var all=loadBookings();all.push({id:s.key,barber:s.barberId,date:s.date,start:s.time,cells:Math.ceil(sv.dur/STEP)});saveBookings(all);
+    W.done={svc:sv.name,barber:b.name,date:s.date,time:s.time,dur:sv.dur,price:sv.price,email:s.form.email.trim(),id:s.key};
+    try{sessionStorage.removeItem("lbbs-wiz")}catch(e){}
+    W.focusH1=true;render();
+  },700);
+}
+function downloadIcs(){
+  var d=W.done;if(!d)return;
+  var fmt=function(x){return x.toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"")},st=chicagoToUTC(d.date,d.time),en=new Date(st.getTime()+d.dur*60000);
+  var ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//"+SHOPNAME+"//Demo//EN","BEGIN:VEVENT","UID:"+d.id+"@booking-demo","DTSTAMP:"+fmt(new Date()),"DTSTART:"+fmt(st),"DTEND:"+fmt(en),"SUMMARY:"+d.svc+" at "+SHOPNAME,"LOCATION:"+SHOP.address.replace(/,/g,"\\,"),"END:VEVENT","END:VCALENDAR"].join("\r\n");
+  var url=URL.createObjectURL(new Blob([ics],{type:"text/calendar;charset=utf-8"})),a=document.createElement("a");
+  a.href=url;a.download="appointment.ics";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},1000);
+}
+function bookPage(){return {title:"Book an appointment",html:'<div id="wz"></div>',init:wizInit}}
+
+/* ---------- Lightbox ---------- */
+var LB={i:0};
+function openLb(i){
+  var dlg=$("#lb");LB.i=(i+PHOTOS.length)%PHOTOS.length;var p=PHOTOS[LB.i];
+  dlg.innerHTML=photo(LB.i,{w:1600,eager:true,cls:"big"})+'<div class="lb-bar"><p>'+esc(p.alt)+'</p><div><button class="ib" type="button" data-act="lbprev" aria-label="Previous photo">&#8249;</button><button class="ib" type="button" data-act="lbnext" aria-label="Next photo">&#8250;</button><button class="ib" type="button" data-act="lbclose" aria-label="Close photo viewer">&#10005;</button></div></div>';
+  if(!dlg.open){if(dlg.showModal)dlg.showModal();else dlg.setAttribute("open","")}
+}
+
+/* ---------- Router ---------- */
+var app=$("#app");
+var ROUTES={"/":home,"/services":servicesPage,"/barbers":barbersPage,"/gallery":galleryPage,"/contact":contactPage,"/book":bookPage,"/privacy":function(){return legal("Privacy policy")},"/terms":function(){return legal("Terms of service")}};
+var firstRoute=true;
+function route(){
+  var raw=(location.hash||"").replace(/^#/,"")||"/",bits=raw.split("?"),path=bits[0]||"/",q=new URLSearchParams(bits[1]||"");
+  var fn=ROUTES[path],r=(fn?fn(q):notFound());
+  app.classList.remove("enter");app.innerHTML=r.html;void app.offsetWidth;app.classList.add("enter");
+  document.title=r.title+" | "+SHOPNAME;
+  var nav=$("#nav");nav.classList.remove("open");$(".menu").setAttribute("aria-expanded","false");
+  [].forEach.call(document.querySelectorAll("[data-nav]"),function(a){if(a.dataset.nav===path)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+  window.scrollTo({top:0,behavior:"instant"});
+  if(r.init)r.init(q);
+  else{var h=$("h1",app);if(h){h.setAttribute("tabindex","-1");if(!firstRoute)h.focus({preventScroll:true})}}
+  firstRoute=false;
+}
+window.addEventListener("hashchange",route);
+
+/* ---------- Events ---------- */
+var A={
+ menu:function(){var n=$("#nav"),o=n.classList.toggle("open");$(".menu").setAttribute("aria-expanded",String(o))},
+ svc:function(t){var id=t.dataset.id,s=W.s;s.serviceId=id;s.date=null;s.time=null;
+   var b=barById(s.barberId);if(b&&b.svc.indexOf(id)>=0)s.step=3;else{s.barberId=null;s.step=2}
+   W.err="";W.anim=true;W.focusH1=true;persist();render()},
+ bar:function(t){var s=W.s;s.barberId=t.dataset.id;s.date=null;s.time=null;s.step=3;W.err="";W.anim=true;W.focusH1=true;persist();render()},
+ month:function(t){var s=W.s,mb=monthBounds(),m=shiftMonth(s.month,+t.dataset.n);if(m<mb.min||m>mb.max)return;s.month=m;persist();render()},
+ day:function(t){var s=W.s;s.date=t.dataset.d;s.time=null;W.pop=s.date;W.slotAnim=true;W.err="";persist();render()},
+ time:function(t){W.s.time=+t.dataset.m;W.err="";persist();render()},
+ go:function(t){var n=+t.dataset.s;if(n===4&&W.s.time===null)return;goStep(n)},
+ jump:jumpNext,
+ confirm:confirmBooking,
+ ics:downloadIcs,
+ again:function(){W.done=null;W.s=normalize({step:1,key:newKey()});W.anim=true;W.focusH1=true;persist();render()},
+ lb:function(t){openLb(+t.dataset.i)},
+ lbnext:function(){openLb(LB.i+1)},
+ lbprev:function(){openLb(LB.i-1)},
+ lbclose:function(){$("#lb").close()}
+};
+document.addEventListener("click",function(e){
+  var t=e.target.closest("[data-act]");
+  if(t&&A[t.dataset.act]){A[t.dataset.act](t)}
+  var dlg=$("#lb");if(e.target===dlg&&dlg.open)dlg.close();
+  if(!e.target.closest(".hd")){var n=$("#nav");if(n.classList.contains("open")){n.classList.remove("open");$(".menu").setAttribute("aria-expanded","false")}}
+});
+document.addEventListener("input",function(e){
+  var f=e.target.dataset&&e.target.dataset.field;
+  if(f&&W.s){W.s.form[f]=e.target.value;persist()}
+});
+document.addEventListener("submit",function(e){
+  if(e.target.dataset&&e.target.dataset.form==="details"){
+    e.preventDefault();
+    if(validate()){goStep(5)}
+    else{W.focusH1=false;render();var bad=document.querySelector('[aria-invalid="true"]');if(bad)bad.focus()}
+  }
+});
+document.addEventListener("keydown",function(e){
+  var dlg=$("#lb");
+  if(dlg&&dlg.open){if(e.key==="ArrowRight")openLb(LB.i+1);else if(e.key==="ArrowLeft")openLb(LB.i-1)}
+  if(e.key==="Escape"){var n=$("#nav");if(n.classList.contains("open")){n.classList.remove("open");$(".menu").setAttribute("aria-expanded","false");$(".menu").focus()}}
+});
+
+route();
+})();
+</script>
+</body>
+</html>
